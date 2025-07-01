@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-//data classes are used to hold data
+//data classes are used to hold common functionality for data
 @Entity(tableName = "shopping_items")
 data class ShoppingItem(
     @ColumnInfo(name = "item-name")
