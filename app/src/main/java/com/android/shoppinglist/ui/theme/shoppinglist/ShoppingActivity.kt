@@ -11,13 +11,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
+import com.android.shoppinglist.data.db.ShoppingDatabase
+import com.android.shoppinglist.data.repositories.ShoppingRepository
 import com.android.shoppinglist.ui.theme.ShoppingListTheme
+import com.android.shoppinglist.ui.theme.shoppinglist.ShoppingViewModel
+import com.android.shoppinglist.ui.theme.shoppinglist.ShoppingViewModelFactory
 
 class ShoppingActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        //initialise viewmodel dependencies
+        val database = ShoppingDatabase(this);
+        val repository = ShoppingRepository(database);
+        val factory = ShoppingViewModelFactory(repository);
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val viewModel: ShoppingViewModel = ViewModelProvider(this, factory)[ShoppingViewModel::class.java];
+
             ShoppingListTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
