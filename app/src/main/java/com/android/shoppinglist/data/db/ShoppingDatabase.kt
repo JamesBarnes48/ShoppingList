@@ -1,9 +1,10 @@
-package com.android.shoppinglist.data
+package com.android.shoppinglist.data.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.android.shoppinglist.data.repositories.entities.ShoppingItem
 
 @Database(
     entities = [ShoppingItem::class],
