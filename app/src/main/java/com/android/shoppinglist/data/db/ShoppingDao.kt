@@ -6,7 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.android.shoppinglist.data.repositories.entities.ShoppingItem
+import com.android.shoppinglist.data.db.entities.ShoppingItem
 
 @Dao
 interface ShoppingDao {
