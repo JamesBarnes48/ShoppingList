@@ -1,4 +1,4 @@
-package com.android.shoppinglist
+package com.android.shoppinglist.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

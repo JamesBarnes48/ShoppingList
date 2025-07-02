@@ -51,3 +51,43 @@ fun getAllShoppingItems(): LiveData<List<ShoppingItem>>
 Lets you define a custom SQL query, run via that function.
 We say it returns a LiveData object which is reactive, like ref() in vue!
 We don't need to say 'suspend' but LiveData is async by nature!
+
+@Database(
+entities = [ShoppingItem::class],
+version = 1
+)
+abstract class ShoppingDatabase: RoomDatabase()
+
+This defines the room database itself. We supply our entities, which says our database is storing items of the ShoppingItem class.
+Remember we previously annotated our ShoppingItem class with @Entity.
+
+We have to increment the version every time we change the database schema.
+
+We define our ShoppingDatabase class as an abstract class that extends RoomDatabase. This is what makes it a database.
+Our database extends our Dao so it can do our insert, delete, query functions we defined there.
+
+companion object {
+    ...
+}
+This companion object is a singleton pattern - it means that we ensure only one instance of the database is created in the apps lifecycle.
+Obvs you dont want two different databases instantiated!
+
+Inside the companion object we have:
+
+@Volatile
+private var instance: ShoppingDatabase? = null;
+private val LOCK = Any();
+
+operator fun invoke(context: Context) = instance ?: synchronized(LOCK){
+    instance ?: createDatabase(context).also { instance = it }
+}
+
+private fun createDatabase(context: Context) =
+    Room.databaseBuilder(context.applicationContext,
+        ShoppingDatabase::class.java, "ShoppingDB.db").build();
+
+@Volatile marks the instance of our database as volatile, ensuring visibility across threads (for coroutining)
+We make a LOCK variable used to synchronize access to the singleton - only one thread can have the lock at once.
+
+We use operator fun invoke to call ShoppingDatabase() passing in context as an argument to get the db instance.
+If the instance exists then we return that, if not then we acquire the LOCK and instantiate it ourselves.
